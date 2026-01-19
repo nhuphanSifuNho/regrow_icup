@@ -5,37 +5,7 @@ import { Button } from '@/components/ui/button';
 import { AlertCircle, TrendingUp, Home, Calendar, CheckCircle, Download, Heart } from 'lucide-react';
 import { Progress } from '@/components/ui/progress';
 import Header from '@/components/header';
-
-// Map Region Marker Component
-interface RegionMarkerProps {
-  name: string;
-  severity: 'severe' | 'moderate' | 'minor';
-  position: { top: string; left: string };
-  onClick: () => void;
-}
-
-const RegionMarker: React.FC<RegionMarkerProps> = ({ name, severity, position, onClick }) => {
-  const severityColors = {
-    severe: 'bg-red-500 border-red-600',
-    moderate: 'bg-yellow-500 border-yellow-600',
-    minor: 'bg-green-500 border-green-600'
-  };
-
-  return (
-    <div
-      className="absolute cursor-pointer transform -translate-x-1/2 -translate-y-1/2"
-      style={{ top: position.top, left: position.left }}
-      onClick={onClick}
-    >
-      <div className={`w-8 h-8 rounded-full ${severityColors[severity]} border-4 border-white shadow-lg hover:scale-110 transition-transform`}>
-        <div className="w-full h-full rounded-full animate-ping opacity-75"></div>
-      </div>
-      <div className="absolute top-10 left-1/2 transform -translate-x-1/2 whitespace-nowrap bg-white px-2 py-1 rounded shadow-md text-xs font-semibold">
-        {name}
-      </div>
-    </div>
-  );
-};
+import RegionMarker from './_components/region-marker';
 
 // Damage Assessment Card Component
 interface DamageMetricProps {
@@ -124,7 +94,7 @@ const MapViewPage = () => {
       id: 1,
       name: 'Quảng Ninh',
       severity: 'severe' as const,
-      position: { top: '25%', left: '65%' },
+      position: { top: '25%', left: '75%' },
       ndvi: 0.45,
       notReported: 15,
       affectedArea: '9,105 ha',
@@ -150,7 +120,7 @@ const MapViewPage = () => {
       id: 3,
       name: 'Thái Bình',
       severity: 'minor' as const,
-      position: { top: '35%', left: '58%' },
+      position: { top: '45%', left: '48%' },
       ndvi: 0.78,
       notReported: 3,
       affectedArea: '2,450 ha',
