@@ -1,5 +1,5 @@
 import { Types } from 'mongoose';
-import { database } from '../config/database';
+import { database } from '../../lib/database';
 import {
   DamageAssessment,
   RecoveryCost,
