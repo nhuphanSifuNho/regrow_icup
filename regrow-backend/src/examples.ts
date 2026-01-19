@@ -32,7 +32,6 @@ async function examples() {
       zone_id: 'EXAMPLE-2026-001',
       province: 'Quảng Trị',
       district: 'Gio Linh',
-      commune: 'Gio Mai',
       coordinates: {
         type: 'Point',
         coordinates: [107.0, 16.9]
@@ -175,7 +174,7 @@ async function examples() {
 
     console.log(`✓ Found ${nearbyZones.length} zones within 50km of Đông Hà`);
     nearbyZones.forEach(z => {
-      console.log(`  • ${z.zone_id} (${z.severity}) - ${z.commune}, ${z.district}`);
+      console.log(`  • ${z.zone_id} (${z.severity}), ${z.district}`);
     });
     console.log();
 
@@ -244,7 +243,6 @@ async function examples() {
         zone_id: 'INVALID-001',
         province: 'Test',
         district: 'Test',
-        commune: 'Test',
         coordinates: { type: 'Point', coordinates: [107.0, 16.8] },
         pre_flood_ndvi: 1.5, // INVALID: > 1.0
         post_flood_ndvi: 0.5,
