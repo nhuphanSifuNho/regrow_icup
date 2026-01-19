@@ -1,8 +1,8 @@
 'use client'
-import React, { useState } from 'react';
+import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { MapPin, Users, FolderKanban, DollarSign, Image, ChevronDown } from 'lucide-react';
+import { MapPin, Users, FolderKanban, DollarSign, Image, ChevronDown, Calendar } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import Header from '@/components/header';
 
@@ -53,31 +53,77 @@ const DetailRow: React.FC<DetailRowProps> = ({ label, value }) => {
   );
 };
 
-// Before/After Image Card Component
-interface BeforeAfterCardProps {
-  label: 'Before' | 'After';
-  imageUrl?: string;
+// Project Card Component with Before/After
+interface ProjectCardProps {
+  location: string;
+  date: string;
+  impact: string;
+  beforeImage?: string;
+  afterImage?: string;
+  onExpand?: () => void;
 }
 
-const BeforeAfterCard: React.FC<BeforeAfterCardProps> = ({ label, imageUrl }) => {
+const ProjectCard: React.FC<ProjectCardProps> = ({
+  location,
+  date,
+  impact,
+  beforeImage,
+  afterImage,
+  onExpand
+}) => {
   return (
-    <div>
-      <h4 className="font-medium text-slate-900 mb-3">{label}</h4>
-      <div className="aspect-video bg-gradient-to-br from-green-100 to-green-200 rounded-lg flex items-center justify-center overflow-hidden">
-        {imageUrl ? (
-          <img src={imageUrl} alt={label} className="w-full h-full object-cover" />
-        ) : (
-          <Image className="w-16 h-16 text-green-400" />
-        )}
-      </div>
-    </div>
+    <Card className="hover:shadow-lg transition-shadow">
+      <CardContent className="p-6">
+        <div className="flex items-center justify-between mb-4">
+          <div>
+            <h4 className="font-semibold text-lg text-slate-900 mb-1">Location - {location}</h4>
+            <p className="text-sm text-slate-500 flex items-center gap-1">
+              <Calendar className="w-3 h-3" />
+              {date}
+            </p>
+          </div>
+          <Button variant="ghost" size="sm" onClick={onExpand}>
+            <ChevronDown className="w-4 h-4" />
+          </Button>
+        </div>
+
+        <div className="grid grid-cols-2 gap-4 mb-4">
+          {/* Before */}
+          <div>
+            <h5 className="font-medium text-slate-700 mb-2 text-sm">Before</h5>
+            <div className="aspect-video bg-gradient-to-br from-slate-200 to-slate-300 rounded-lg flex items-center justify-center overflow-hidden">
+              {beforeImage ? (
+                <img src={beforeImage} alt="Before" className="w-full h-full object-cover" />
+              ) : (
+                <Image className="w-12 h-12 text-slate-400" />
+              )}
+            </div>
+          </div>
+
+          {/* After */}
+          <div>
+            <h5 className="font-medium text-slate-700 mb-2 text-sm">After</h5>
+            <div className="aspect-video bg-gradient-to-br from-green-100 to-green-200 rounded-lg flex items-center justify-center overflow-hidden">
+              {afterImage ? (
+                <img src={afterImage} alt="After" className="w-full h-full object-cover" />
+              ) : (
+                <Image className="w-12 h-12 text-green-400" />
+              )}
+            </div>
+          </div>
+        </div>
+
+        <div className="p-3 bg-green-50 rounded-lg">
+          <p className="text-sm text-green-700">
+            <span className="font-semibold">Impact:</span> {impact}
+          </p>
+        </div>
+      </CardContent>
+    </Card>
   );
 };
 
 const DashboardPage = () => {
-  const [selectedLocation, setSelectedLocation] = useState('Flood zone');
-  const [selectedProject, setSelectedProject] = useState('Storm Area');
-
   // Overview Dashboard Data
   const summaryData = [
     {
@@ -116,36 +162,49 @@ const DashboardPage = () => {
     { label: 'Tools', value: '1,250,000,000 VND' }
   ];
 
-  // Projects Dashboard Data
-  const projectSummaryData = [
+  // Projects Data
+  const projectsData = [
     {
-      icon: <MapPin className="w-5 h-5" />,
-      label: 'Areas',
-      value: '23',
-      subtext: 'Provinces',
-      subtextColor: 'text-blue-600'
+      id: 1,
+      location: 'Flood zone',
+      date: 'November 2025',
+      impact: '45 hectares of farmland restored'
     },
     {
-      icon: <FolderKanban className="w-5 h-5" />,
-      label: 'Projects',
-      value: '156',
-      subtext: 'Completed',
-      subtextColor: 'text-orange-600'
+      id: 2,
+      location: 'Storm Area',
+      date: 'March 2025',
+      impact: '32 hectares of agricultural land rehabilitated'
     },
     {
-      icon: <Users className="w-5 h-5" />,
-      label: 'Beneficiaries',
-      value: '8420',
-      subtext: 'Households',
-      subtextColor: 'text-red-600'
+      id: 3,
+      location: 'Coastal Region',
+      date: 'October 2025',
+      impact: '28 hectares of mangrove forest replanted'
+    },
+    {
+      id: 4,
+      location: 'Mountain District',
+      date: 'August 2025',
+      impact: '50 hectares of terraced fields restored'
+    },
+    {
+      id: 5,
+      location: 'Delta Zone',
+      date: 'June 2025',
+      impact: '38 hectares of rice paddies recovered'
+    },
+    {
+      id: 6,
+      location: 'Highland Area',
+      date: 'April 2025',
+      impact: '42 hectares of crop land rejuvenated'
     }
   ];
 
-  const projectDetailStatements = [
-    { label: 'Seeds & seedlings', value: '950,000,000 VND' },
-    { label: 'Fertilizer', value: '150,000,000 VND' },
-    { label: 'Tools', value: '1,250,000,000 VND' }
-  ];
+  const handleProjectExpand = (id: number) => {
+    console.log('Expand project:', id);
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
@@ -173,7 +232,6 @@ const DashboardPage = () => {
           <TabsList className="bg-white">
             <TabsTrigger value="overview">Overview</TabsTrigger>
             <TabsTrigger value="projects">Projects</TabsTrigger>
-            <TabsTrigger value="before-after">Before & After</TabsTrigger>
           </TabsList>
 
           {/* Overview Tab */}
@@ -208,85 +266,27 @@ const DashboardPage = () => {
             </section>
           </TabsContent>
 
-          {/* Projects Tab */}
+          {/* Projects Tab with Before & After */}
           <TabsContent value="projects" className="space-y-6">
-            {/* Summary Cards */}
             <section>
-              <h3 className="text-xl font-bold text-slate-900 mb-4">Summaries</h3>
-              <div className="grid md:grid-cols-3 gap-6">
-                {projectSummaryData.map((item, index) => (
-                  <SummaryCard
-                    key={index}
-                    icon={item.icon}
-                    label={item.label}
-                    value={item.value}
-                    subtext={item.subtext}
-                    subtextColor={item.subtextColor}
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-xl font-bold text-slate-900">Active Recovery Projects</h3>
+                <div className="text-sm text-slate-600">
+                  {projectsData.length} projects in progress
+                </div>
+              </div>
+
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {projectsData.map((project) => (
+                  <ProjectCard
+                    key={project.id}
+                    location={project.location}
+                    date={project.date}
+                    impact={project.impact}
+                    onExpand={() => handleProjectExpand(project.id)}
                   />
                 ))}
               </div>
-            </section>
-
-            {/* Detailed Statements */}
-            <section>
-              <h3 className="text-xl font-bold text-slate-900 mb-4">Detailed Statements</h3>
-              <Card>
-                <CardContent className="p-6">
-                  {projectDetailStatements.map((item, index) => (
-                    <DetailRow key={index} label={item.label} value={item.value} />
-                  ))}
-                </CardContent>
-              </Card>
-            </section>
-          </TabsContent>
-
-          {/* Before & After Tab */}
-          <TabsContent value="before-after" className="space-y-6">
-            <section>
-              <h3 className="text-xl font-bold text-slate-900 mb-4">Before & After Recovery</h3>
-
-              {/* Location Selector */}
-              <Card className="mb-6">
-                <CardContent className="p-4">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <span className="text-sm text-slate-600 block mb-1">Location - {selectedLocation}</span>
-                      <span className="text-xs text-slate-500">November 2025</span>
-                    </div>
-                    <Button variant="ghost" size="sm">
-                      <ChevronDown className="w-4 h-4" />
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* Before Section */}
-              <div className="mb-8">
-                <BeforeAfterCard label="Before" />
-              </div>
-
-              {/* After Section */}
-              <div className="mb-8">
-                <BeforeAfterCard label="After" />
-                <p className="text-sm text-green-600 font-medium mt-3">
-                  Impact: 45 hectares of farmland restored
-                </p>
-              </div>
-
-              {/* Project Selector */}
-              <Card>
-                <CardContent className="p-4">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <span className="text-sm text-slate-600 block mb-1">Location - {selectedProject}</span>
-                      <span className="text-xs text-slate-500">March 2025</span>
-                    </div>
-                    <Button variant="ghost" size="sm">
-                      <ChevronDown className="w-4 h-4" />
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
             </section>
           </TabsContent>
         </Tabs>

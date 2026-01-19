@@ -9,6 +9,7 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = ({ activeTab = 'explore' }) => {
   const navItems = [
     { id: 'explore', label: 'Explore', href: '/' },
+    { id: 'map', label: 'Map', href: '/map' },
     { id: 'news', label: 'News', href: '/news' },
     { id: 'donate', label: 'Donate', href: '/donate' },
     { id: 'dashboard', label: 'Dashboard', href: '/dashboard' }
