@@ -144,7 +144,7 @@ const MapViewPage = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
-      <Header activeTab="explore" />
+      <Header activeTab="map" />
 
       <main className="max-w-7xl mx-auto px-6 py-8">
         {!selectedRegion ? (
