@@ -1,4 +1,4 @@
-import mongoose, { Schema, Model } from 'mongoose';
+import mongoose, { Schema, Model, Types } from 'mongoose';
 import {
   IDamageAssessmentDocument,
   SeverityLevel,
@@ -35,11 +35,10 @@ const DamageAssessmentSchema = new Schema<
 >(
   {
     zone_id: {
-      type: String,
+      type: Schema.Types.ObjectId,
       required: [true, 'Zone ID is required'],
       unique: true,
-      trim: true,
-      index: true
+      trim: true
     },
     province: {
       type: String,
@@ -50,11 +49,6 @@ const DamageAssessmentSchema = new Schema<
     district: {
       type: String,
       required: [true, 'District is required'],
-      trim: true
-    },
-    commune: {
-      type: String,
-      required: [true, 'Commune is required'],
       trim: true
     },
     coordinates: {

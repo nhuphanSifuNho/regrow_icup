@@ -1,4 +1,4 @@
-import { Document, Types } from 'mongoose';
+import mongoose, { Document, Types } from 'mongoose';
 
 /**
  * Enum Types
@@ -44,10 +44,9 @@ export interface GeoJSONPoint {
  * DamageAssessment Interfaces
  */
 export interface IDamageAssessment {
-  zone_id: string;
+  zone_id: Types.ObjectId;
   province: string;
   district: string;
-  commune: string;
   coordinates: GeoJSONPoint;
   pre_flood_ndvi: number;
   post_flood_ndvi: number;

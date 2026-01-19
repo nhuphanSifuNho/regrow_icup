@@ -1,5 +1,5 @@
 import { Types } from 'mongoose';
-import { database } from '../config/database';
+import { database } from '../../lib/database';
 import {
   DamageAssessment,
   RecoveryCost,
@@ -44,7 +44,6 @@ async function seedDatabase() {
       zone_id: 'QT-FLOOD-2025-001',
       province: 'Quảng Trị',
       district: 'Triệu Phong',
-      commune: 'Triệu An',
       coordinates: {
         type: 'Point',
         coordinates: [107.1, 16.8] // [longitude, latitude]
@@ -80,7 +79,6 @@ async function seedDatabase() {
       zone_id: 'HUE-FLOOD-2025-002',
       province: 'Thừa Thiên Huế',
       district: 'Phong Điền',
-      commune: 'Phong Hải',
       coordinates: {
         type: 'Point',
         coordinates: [107.5, 16.4]
@@ -114,7 +112,6 @@ async function seedDatabase() {
       zone_id: 'QB-FLOOD-2025-003',
       province: 'Quảng Bình',
       district: 'Lệ Thủy',
-      commune: 'Hồng Thủy',
       coordinates: {
         type: 'Point',
         coordinates: [106.9, 17.2]
