@@ -154,7 +154,13 @@ const HomePage = () => {
       <main className="max-w-7xl mx-auto px-6 py-8">
         {/* Hero Section */}
         <section className="mb-12">
-          <Card className="relative overflow-hidden bg-gradient-to-r from-green-600 to-emerald-700 border-0 p-0">
+          <Card className="relative overflow-hidden bg-gradient-to-r from-green-600 to-emerald-700 border-0 p-0"
+            style={{
+              backgroundImage: 'url(/quang_tri.jpg)',
+              backgroundSize: 'cover',
+              backgroundPosition: 'center'
+            }}
+          >
             <CardContent className="p-0 z-10">
               <div className="grid md:grid-cols-2 gap-8 items-center">
                 <div className="p-12">
@@ -167,22 +173,6 @@ const HomePage = () => {
                   <Button size="lg" className="bg-white text-green-700 hover:bg-green-50">
                     Get Started
                   </Button>
-                </div>
-                <div className="relative h-80 flex items-center justify-center"
-                  style={{
-                    backgroundImage: 'url(/quang_tri.jpg)',
-                    backgroundSize: 'cover',
-                    backgroundPosition: 'center'
-                  }}
-                >
-                  {/* Image carousel dots */}
-                  <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 flex gap-2">
-                    <div className="w-2 h-2 rounded-full bg-white"></div>
-                    <div className="w-2 h-2 rounded-full bg-white/50"></div>
-                    <div className="w-2 h-2 rounded-full bg-white/50"></div>
-                    <div className="w-2 h-2 rounded-full bg-white/50"></div>
-                    <div className="w-2 h-2 rounded-full bg-white/50"></div>
-                  </div>
                 </div>
               </div>
             </CardContent>
