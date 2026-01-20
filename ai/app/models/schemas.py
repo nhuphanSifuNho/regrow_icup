@@ -52,11 +52,11 @@ class DamageAssessmentResponse(BaseModel):
         damage_score = info.data.get('damage_score', 0)
         
         if damage_score >= 0.6:
-            return "high"
+            return "severe"
         elif damage_score >= 0.3:
-            return "medium"
+            return "moderate"
         else:
-            return "low"
+            return "minor"
     
     model_config = {
         "json_schema_extra": {
@@ -64,7 +64,7 @@ class DamageAssessmentResponse(BaseModel):
                 "region_id": "central_vietnam_01",
                 "damage_score": 0.67,
                 "damaged_area_ha": 124.5,
-                "severity": "high",
+                "severity": "severe",
                 "breakdown": {
                     "severe_ha": 80.0,
                     "moderate_ha": 44.5,
@@ -147,6 +147,84 @@ class DistributeFundsResponse(BaseModel):
                         "amount": 39000.00,
                         "percentage": 39.0
                     }
+                ]
+            }]
+        }
+    }
+
+
+# ============================================================================
+# Satellite Image Analysis Schemas (Google Gemini Vision)
+# ============================================================================
+
+class SatelliteImageRequest(BaseModel):
+    """Request schema for satellite image analysis endpoint"""
+    zone_id: str = Field(min_length=1, description="Unique identifier for the zone/region")
+    image_data: str = Field(description="Image data (base64 string, URL, or file path)")
+    image_type: Literal["base64", "url", "file"] = Field(
+        default="base64",
+        description="Type of image data: 'base64' for base64-encoded string, 'url' for HTTP/HTTPS URL, 'file' for local file path"
+    )
+    
+    model_config = {
+        "json_schema_extra": {
+            "examples": [{
+                "zone_id": "quang_tri_zone_01",
+                "image_data": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
+                "image_type": "base64"
+            }, {
+                "zone_id": "quang_tri_zone_02",
+                "image_data": "https://example.com/satellite/image.jpg",
+                "image_type": "url"
+            }]
+        }
+    }
+
+
+class SatelliteImageAnalysis(BaseModel):
+    """Response schema for satellite image analysis"""
+    zone_id: str = Field(description="Zone identifier")
+    damage_summary: str = Field(description="Brief description of visible damage")
+    severity: Literal["high", "medium", "low"] = Field(description="Overall damage severity classification")
+    confidence_score: float = Field(ge=0.0, le=1.0, description="AI confidence in the assessment (0.0-1.0)")
+    affected_features: List[str] = Field(
+        default_factory=list,
+        description="List of identified affected features (e.g., flooded_fields, damaged_crops, submerged_roads)"
+    )
+    vegetation_status: str = Field(
+        default="unknown",
+        description="Vegetation health status (e.g., healthy, stressed, severely_damaged, destroyed)"
+    )
+    water_presence: str = Field(
+        default="unknown",
+        description="Water coverage description (e.g., none, minimal, moderate, extensive, severe_flooding)"
+    )
+    recommendations: List[str] = Field(
+        default_factory=list,
+        description="List of actionable recommendations for recovery"
+    )
+    
+    model_config = {
+        "json_schema_extra": {
+            "examples": [{
+                "zone_id": "quang_tri_zone_01",
+                "damage_summary": "Extensive flooding visible across agricultural areas with standing water covering approximately 70% of cropland. Vegetation shows severe stress with browning and submersion.",
+                "severity": "high",
+                "confidence_score": 0.85,
+                "affected_features": [
+                    "flooded_fields",
+                    "damaged_crops",
+                    "standing_water",
+                    "submerged_roads",
+                    "eroded_soil"
+                ],
+                "vegetation_status": "severely_damaged",
+                "water_presence": "extensive",
+                "recommendations": [
+                    "Immediate drainage system deployment required",
+                    "Assess crop salvageability within 48 hours",
+                    "Monitor for secondary flooding from saturated soil",
+                    "Plan soil rehabilitation and replanting strategy"
                 ]
             }]
         }
