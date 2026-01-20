@@ -261,7 +261,7 @@ const MapViewPage = () => {
               {/* Main Content */}
               <div className="lg:col-span-2 space-y-6">
                 {/* Header Card */}
-                <Card className="overflow-hidden">
+                <Card className="overflow-hidden p-0">
                   <div className="bg-gradient-to-r from-red-600 to-red-700 p-6 text-white">
                     <div className="flex items-center justify-between">
                       <div>
@@ -500,7 +500,7 @@ const MapViewPage = () => {
                       <Button className="w-full bg-white text-green-600 hover:bg-green-50">
                         Donate Now
                       </Button>
-                      <Button variant="outline" className="w-full border-white text-white hover:bg-green-700 gap-2">
+                      <Button className="w-full bg-white text-green-600 hover:bg-green-50">
                         <Download className="w-4 h-4" />
                         Download Report
                       </Button>
