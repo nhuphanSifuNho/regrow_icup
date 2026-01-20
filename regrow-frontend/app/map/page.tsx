@@ -94,7 +94,7 @@ const MapViewPage = () => {
       id: 1,
       name: 'Quảng Ninh',
       severity: 'severe' as const,
-      position: { top: '25%', left: '75%' },
+      position: { top: '48%', left: '20%' },
       ndvi: 0.45,
       notReported: 15,
       affectedArea: '9,105 ha',
@@ -107,7 +107,7 @@ const MapViewPage = () => {
       id: 2,
       name: 'Hải Phòng',
       severity: 'moderate' as const,
-      position: { top: '30%', left: '60%' },
+      position: { top: '67%', left: '33%' },
       ndvi: 0.62,
       notReported: 8,
       affectedArea: '5,230 ha',
@@ -120,7 +120,7 @@ const MapViewPage = () => {
       id: 3,
       name: 'Thái Bình',
       severity: 'minor' as const,
-      position: { top: '45%', left: '48%' },
+      position: { top: '86%', left: '45%' },
       ndvi: 0.78,
       notReported: 3,
       affectedArea: '2,450 ha',
@@ -152,7 +152,7 @@ const MapViewPage = () => {
           <div className="grid lg:grid-cols-3 gap-6">
             {/* Map Section */}
             <div className="lg:col-span-2">
-              <Card className="overflow-hidden">
+              <Card className="overflow-hidden p-0 gap-0">
                 <div className="bg-gradient-to-r from-green-600 to-emerald-700 p-6">
                   <h2 className="text-2xl font-bold text-white mb-1">Damage Heat Map</h2>
                   <p className="text-green-50">View Storm Damage Severity</p>
@@ -161,7 +161,9 @@ const MapViewPage = () => {
 
                 <CardContent className="p-0">
                   {/* Vietnam Map Placeholder with Heat Overlay */}
-                  <div className="relative bg-gradient-to-br from-green-900 via-green-700 to-green-800 h-[600px]">
+                  <div style={{
+                    backgroundImage: "url(/FloodAssessment.png)"
+                  }} className="relative bg-gradient-to-br bg-cover from-green-900 via-green-700 to-green-800 h-[600px]">
                     {/* Simulated heat map effect */}
                     <div className="absolute inset-0 bg-gradient-to-br from-red-500/30 via-yellow-500/20 to-green-500/10"></div>
 
@@ -259,7 +261,7 @@ const MapViewPage = () => {
               {/* Main Content */}
               <div className="lg:col-span-2 space-y-6">
                 {/* Header Card */}
-                <Card className="overflow-hidden">
+                <Card className="overflow-hidden p-0">
                   <div className="bg-gradient-to-r from-red-600 to-red-700 p-6 text-white">
                     <div className="flex items-center justify-between">
                       <div>
@@ -498,7 +500,7 @@ const MapViewPage = () => {
                       <Button className="w-full bg-white text-green-600 hover:bg-green-50">
                         Donate Now
                       </Button>
-                      <Button variant="outline" className="w-full border-white text-white hover:bg-green-700 gap-2">
+                      <Button className="w-full bg-white text-green-600 hover:bg-green-50">
                         <Download className="w-4 h-4" />
                         Download Report
                       </Button>
