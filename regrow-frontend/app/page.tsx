@@ -154,8 +154,8 @@ const HomePage = () => {
       <main className="max-w-7xl mx-auto px-6 py-8">
         {/* Hero Section */}
         <section className="mb-12">
-          <Card className="overflow-hidden bg-gradient-to-r from-green-600 to-emerald-700 border-0">
-            <CardContent className="p-0">
+          <Card className="relative overflow-hidden bg-gradient-to-r from-green-600 to-emerald-700 border-0 p-0">
+            <CardContent className="p-0 z-10">
               <div className="grid md:grid-cols-2 gap-8 items-center">
                 <div className="p-12">
                   <h2 className="text-4xl font-bold text-white mb-4">
@@ -168,19 +168,19 @@ const HomePage = () => {
                     Get Started
                   </Button>
                 </div>
-                <div className="relative h-80 bg-green-500/20 flex items-center justify-center">
-                  <Image className="w-32 h-32 text-white/40" />
-                  {/* Image carousel dots */}
-                  <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 flex gap-2">
-                    <div className="w-2 h-2 rounded-full bg-white"></div>
-                    <div className="w-2 h-2 rounded-full bg-white/50"></div>
-                    <div className="w-2 h-2 rounded-full bg-white/50"></div>
-                    <div className="w-2 h-2 rounded-full bg-white/50"></div>
-                    <div className="w-2 h-2 rounded-full bg-white/50"></div>
-                  </div>
-                </div>
+                {/* <div className="relative h-80 bg-green-500/20 flex items-center justify-center"> */}
+                {/*   <Image className="w-32 h-32 text-white/40" /> */}
+                {/*   <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 flex gap-2"> */}
+                {/*     <div className="w-2 h-2 rounded-full bg-white"></div> */}
+                {/*     <div className="w-2 h-2 rounded-full bg-white/50"></div> */}
+                {/*     <div className="w-2 h-2 rounded-full bg-white/50"></div> */}
+                {/*     <div className="w-2 h-2 rounded-full bg-white/50"></div> */}
+                {/*     <div className="w-2 h-2 rounded-full bg-white/50"></div> */}
+                {/*   </div> */}
+                {/* </div> */}
               </div>
             </CardContent>
+            <div className='absolute bg-gradient-to-r from-black/75 to-transparent top-0 bottom-0 left-0 right-0 z-0' />
           </Card>
         </section>
 
