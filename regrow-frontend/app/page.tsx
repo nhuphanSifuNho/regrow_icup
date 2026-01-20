@@ -5,6 +5,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { MapPin, Image, ChevronRight, Bell, User } from 'lucide-react';
 import Header from '@/components/header';
+import { Progress } from '@/components/ui/progress';
 
 // Reusable Emergency Help Card Component
 interface EmergencyHelpCardProps {
@@ -21,11 +22,11 @@ const EmergencyHelpCard: React.FC<EmergencyHelpCardProps> = ({
   location,
   distance,
   maxDistance,
-  progress,
+  progress = 0,
   onClick
 }) => {
   return (
-    <Card className="hover:shadow-lg transition-shadow cursor-pointer" onClick={onClick}>
+    <Card className="hover:shadow-lg transition-shadow cursor-pointer p-0" onClick={onClick}>
       <CardContent className="p-0">
         <div className="aspect-video bg-gradient-to-br from-slate-200 to-slate-300 flex items-center justify-center overflow-hidden">
           {imageUrl ? (
@@ -34,12 +35,15 @@ const EmergencyHelpCard: React.FC<EmergencyHelpCardProps> = ({
             <Image className="w-16 h-16 text-slate-400" />
           )}
         </div>
-        <div className="p-4">
-          <div className="flex items-center justify-between mb-2">
+        <div className="p-4 space-y-2">
+          <div className="flex items-center justify-between">
             <span className="text-sm font-semibold text-slate-900">{location}</span>
             {progress !== undefined && (
               <span className="text-xs text-slate-500">{progress}%</span>
             )}
+          </div>
+          <div>
+            <Progress value={progress} className='w-full' />
           </div>
           <div className="flex items-center gap-2 text-sm text-slate-600">
             <MapPin className="w-4 h-4" />
@@ -82,7 +86,7 @@ const ZoneCard: React.FC<ZoneCardProps> = ({
   };
 
   return (
-    <Card className="hover:shadow-lg transition-shadow cursor-pointer" onClick={onClick}>
+    <Card className="hover:shadow-lg transition-shadow cursor-pointer p-0" onClick={onClick}>
       <CardContent className="p-0">
         <div className={`aspect-video bg-gradient-to-br ${colorClasses[colorScheme]} flex items-center justify-center overflow-hidden`}>
           {imageUrl ? (
@@ -150,8 +154,8 @@ const HomePage = () => {
       <main className="max-w-7xl mx-auto px-6 py-8">
         {/* Hero Section */}
         <section className="mb-12">
-          <Card className="overflow-hidden bg-gradient-to-r from-green-600 to-emerald-700 border-0">
-            <CardContent className="p-0">
+          <Card className="relative overflow-hidden bg-gradient-to-r from-green-600 to-emerald-700 border-0 p-0">
+            <CardContent className="p-0 z-10">
               <div className="grid md:grid-cols-2 gap-8 items-center">
                 <div className="p-12">
                   <h2 className="text-4xl font-bold text-white mb-4">
@@ -182,6 +186,7 @@ const HomePage = () => {
                 </div>
               </div>
             </CardContent>
+            <div className='absolute bg-gradient-to-r from-black/75 to-transparent top-0 bottom-0 left-0 right-0 z-0' />
           </Card>
         </section>
 
