@@ -84,7 +84,7 @@ const DonatePage = () => {
 
             {/* Right Side - Donation Form */}
             <div>
-              <Card className="overflow-hidden">
+              <Card className="overflow-hidden p-0">
                 <div className="bg-gradient-to-r from-green-600 to-emerald-700 p-8 text-center">
                   <h3 className="text-3xl font-bold text-white mb-2">Donate Now</h3>
                   <p className="text-green-50">Choose your donation amount</p>
@@ -139,7 +139,7 @@ const DonatePage = () => {
               ← Back to amount
             </Button>
 
-            <Card className="overflow-hidden">
+            <Card className="overflow-hidden p-0">
               <div className="bg-gradient-to-r from-green-600 to-emerald-700 p-8 text-center">
                 <h3 className="text-3xl font-bold text-white mb-2">Donate Now</h3>
                 <p className="text-green-50">Scan QR code to complete donation</p>
