@@ -164,8 +164,13 @@ const HomePage = () => {
                     Get Started
                   </Button>
                 </div>
-                <div className="relative h-80 bg-green-500/20 flex items-center justify-center">
-                  <Image className="w-32 h-32 text-white/40" />
+                <div className="relative h-80 flex items-center justify-center"
+                  style={{
+                    backgroundImage: 'url(/quang_tri.jpg)',
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center'
+                  }}
+                >
                   {/* Image carousel dots */}
                   <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 flex gap-2">
                     <div className="w-2 h-2 rounded-full bg-white"></div>
