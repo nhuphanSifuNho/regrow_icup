@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { AlertCircle, TrendingUp, Home, Calendar, CheckCircle, Download, Heart } from 'lucide-react';
+import { AlertCircle, TrendingUp, Home, Calendar, CheckCircle, Download, Heart, RefreshCw } from 'lucide-react';
 import { Progress } from '@/components/ui/progress';
 import Header from '@/components/header';
 import RegionMarker from './_components/region-marker';
@@ -87,9 +87,54 @@ const TimelineStep: React.FC<TimelineStepProps> = ({
 const MapViewPage = () => {
   const [selectedRegion, setSelectedRegion] = useState<string | null>(null);
   const [detailView, setDetailView] = useState<'overview' | 'timeline' | 'breakdown'>('overview');
+  const [isReloading, setIsReloading] = useState(false);
+  const [lastUpdated, setLastUpdated] = useState<Date>(new Date());
 
-  // Sample region data
-  const regions = [
+  // Additional regions to add on reload
+  const additionalRegions = [
+    {
+      id: 4,
+      name: 'Hà Nội',
+      severity: 'moderate' as const,
+      position: { top: '38%', left: '48%' },
+      ndvi: 0.58,
+      notReported: 12,
+      affectedArea: '7,680 ha',
+      damageAssessment: 22100000,
+      soilErosion: 55,
+      flooding: 48,
+      nutrientLoss: 52
+    },
+    {
+      id: 5,
+      name: 'Hải Dương',
+      severity: 'severe' as const,
+      position: { top: '52%', left: '42%' },
+      ndvi: 0.42,
+      notReported: 18,
+      affectedArea: '11,220 ha',
+      damageAssessment: 35600000,
+      soilErosion: 88,
+      flooding: 72,
+      nutrientLoss: 78
+    },
+    {
+      id: 6,
+      name: 'Hưng Yên',
+      severity: 'minor' as const,
+      position: { top: '60%', left: '52%' },
+      ndvi: 0.72,
+      notReported: 5,
+      affectedArea: '3,890 ha',
+      damageAssessment: 11200000,
+      soilErosion: 32,
+      flooding: 35,
+      nutrientLoss: 28
+    }
+  ];
+
+  // Initial region data
+  const initialRegions = [
     {
       id: 1,
       name: 'Quảng Ninh',
@@ -131,6 +176,8 @@ const MapViewPage = () => {
     }
   ];
 
+  const [regions, setRegions] = useState(initialRegions);
+
   const selectedRegionData = regions.find(r => r.name === selectedRegion);
 
   const handleRegionClick = (regionName: string) => {
@@ -140,6 +187,33 @@ const MapViewPage = () => {
 
   const handleBackToMap = () => {
     setSelectedRegion(null);
+  };
+
+  const handleReload = async () => {
+    setIsReloading(true);
+    // Simulate API call delay (2 seconds)
+    await new Promise(resolve => setTimeout(resolve, 2000));
+    
+    // Add one new region on each reload
+    const randomIndex = Math.floor(Math.random() * additionalRegions.length);
+    const newRegion = additionalRegions[randomIndex];
+    
+    // Check if region already exists
+    if (!regions.some(r => r.id === newRegion.id)) {
+      setRegions([...regions, newRegion]);
+    }
+    
+    setLastUpdated(new Date());
+    setIsReloading(false);
+  };
+
+  const formatLastUpdated = (date: Date) => {
+    return date.toLocaleTimeString('en-US', { 
+      hour: '2-digit', 
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: true 
+    });
   };
 
   return (
@@ -153,10 +227,25 @@ const MapViewPage = () => {
             {/* Map Section */}
             <div className="lg:col-span-2">
               <Card className="overflow-hidden p-0 gap-0">
-                <div className="bg-gradient-to-r from-green-600 to-emerald-700 p-6">
-                  <h2 className="text-2xl font-bold text-white mb-1">Damage Heat Map</h2>
-                  <p className="text-green-50">View Storm Damage Severity</p>
-                  <p className="text-xs text-green-100 mt-2">Dec 2025</p>
+                <div className="bg-gradient-to-r from-green-600 to-emerald-700 p-6 flex justify-between items-start">
+                  <div>
+                    <h2 className="text-2xl font-bold text-white mb-1">Damage Heat Map</h2>
+                    <p className="text-green-50">View Storm Damage Severity</p>
+                    <p className="text-xs text-green-100 mt-2">Dec 2025</p>
+                  </div>
+                  <div className="flex flex-col items-end gap-2">
+                    <Button
+                      onClick={handleReload}
+                      disabled={isReloading}
+                      className="bg-white text-green-600 hover:bg-green-50 gap-2"
+                    >
+                      <RefreshCw className={`w-4 h-4 ${isReloading ? 'animate-spin' : ''}`} />
+                      {isReloading ? 'Refreshing...' : 'Reload Data'}
+                    </Button>
+                    <p className="text-xs text-green-100">
+                      Updated: {formatLastUpdated(lastUpdated)}
+                    </p>
+                  </div>
                 </div>
 
                 <CardContent className="p-0">
@@ -205,15 +294,26 @@ const MapViewPage = () => {
             <div className="space-y-4">
               <Card className="bg-blue-50 border-blue-200">
                 <CardContent className="p-4">
-                  <div className="flex items-start gap-3">
-                    <AlertCircle className="w-5 h-5 text-blue-600 flex-shrink-0 mt-1" />
-                    <div>
-                      <h3 className="font-semibold text-blue-900 mb-2">Data Freshness: SLA: 48 hours</h3>
-                      <p className="text-sm text-blue-800">
-                        Click on any zone to view detailed statistics and recovery costs. Zones are automatically
-                        classified based on ΔNDVI values from satellite imagery.
-                      </p>
+                  <div className="flex items-start gap-3 justify-between">
+                    <div className="flex items-start gap-3 flex-1">
+                      <AlertCircle className="w-5 h-5 text-blue-600 flex-shrink-0 mt-1" />
+                      <div>
+                        <h3 className="font-semibold text-blue-900 mb-2">Data Freshness: SLA: 48 hours</h3>
+                        <p className="text-sm text-blue-800">
+                          Click on any zone to view detailed statistics and recovery costs. Zones are automatically
+                          classified based on ΔNDVI values from satellite imagery.
+                        </p>
+                      </div>
                     </div>
+                    <Button
+                      onClick={handleReload}
+                      disabled={isReloading}
+                      size="sm"
+                      className="gap-1 flex-shrink-0"
+                    >
+                      <RefreshCw className={`w-4 h-4 ${isReloading ? 'animate-spin' : ''}`} />
+                      {isReloading ? 'Loading...' : 'Refresh'}
+                    </Button>
                   </div>
                 </CardContent>
               </Card>
