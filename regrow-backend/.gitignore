@@ -6,3 +6,6 @@ dist/
 .DS_Store
 coverage/
 .vscode/
+# next.js
+/.next/
+/out/
