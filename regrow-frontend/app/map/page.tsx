@@ -89,6 +89,9 @@ const MapViewPage = () => {
   const [detailView, setDetailView] = useState<'overview' | 'timeline' | 'breakdown'>('overview');
   const [isReloading, setIsReloading] = useState(false);
   const [lastUpdated, setLastUpdated] = useState<Date>(new Date());
+  const [isDetailReloading, setIsDetailReloading] = useState(false);
+  const [detailLastUpdated, setDetailLastUpdated] = useState<Date | null>(null);
+  const [regionDataUpdates, setRegionDataUpdates] = useState<{ [key: string]: number }>({});
 
   // Additional regions to add on reload
   const additionalRegions = [
@@ -180,6 +183,25 @@ const MapViewPage = () => {
 
   const selectedRegionData = regions.find(r => r.name === selectedRegion);
 
+  const getUpdatedRegionData = () => {
+    if (!selectedRegionData) return selectedRegionData;
+    
+    const updateCount = regionDataUpdates[selectedRegion || ''] || 0;
+    const multiplier = 1 + (updateCount * 0.05); // 5% increase per reload
+    
+    return {
+      ...selectedRegionData,
+      ndvi: Math.min(0.95, Number((selectedRegionData.ndvi * multiplier).toFixed(2))),
+      damageAssessment: Math.floor(selectedRegionData.damageAssessment * (0.9 - updateCount * 0.05)), // Decreases as recovery progresses
+      soilErosion: Math.max(5, Math.floor(selectedRegionData.soilErosion - updateCount * 3)),
+      flooding: Math.max(5, Math.floor(selectedRegionData.flooding - updateCount * 2)),
+      nutrientLoss: Math.max(5, Math.floor(selectedRegionData.nutrientLoss - updateCount * 3)),
+      notReported: Math.max(0, selectedRegionData.notReported - updateCount)
+    };
+  };
+
+  const displayedRegionData = getUpdatedRegionData();
+
   const handleRegionClick = (regionName: string) => {
     setSelectedRegion(regionName);
     setDetailView('overview');
@@ -214,6 +236,21 @@ const MapViewPage = () => {
       second: '2-digit',
       hour12: true 
     });
+  };
+
+  const handleDetailReload = async () => {
+    setIsDetailReloading(true);
+    // Simulate API call delay (2 seconds)
+    await new Promise(resolve => setTimeout(resolve, 2000));
+    
+    // Update the region data version
+    setRegionDataUpdates({
+      ...regionDataUpdates,
+      [selectedRegion || '']: (regionDataUpdates[selectedRegion || ''] || 0) + 1
+    });
+    
+    setDetailLastUpdated(new Date());
+    setIsDetailReloading(false);
   };
 
   return (
@@ -366,12 +403,28 @@ const MapViewPage = () => {
                     <div className="flex items-center justify-between">
                       <div>
                         <h2 className="text-3xl font-bold mb-1">{selectedRegion}</h2>
-                        <p className="text-red-100">ΔNDVI = {selectedRegionData?.ndvi}</p>
+                        <p className="text-red-100">ΔNDVI = {displayedRegionData?.ndvi}</p>
                       </div>
-                      <Button variant="secondary" size="sm" className="gap-2">
-                        <Heart className="w-4 h-4" />
-                        Donate Now
-                      </Button>
+                      <div className="flex flex-col items-end gap-3">
+                        <Button variant="secondary" size="sm" className="gap-2">
+                          <Heart className="w-4 h-4" />
+                          Donate Now
+                        </Button>
+                        <Button
+                          onClick={handleDetailReload}
+                          disabled={isDetailReloading}
+                          size="sm"
+                          className="gap-2 bg-white text-red-600 hover:bg-red-50"
+                        >
+                          <RefreshCw className={`w-4 h-4 ${isDetailReloading ? 'animate-spin' : ''}`} />
+                          {isDetailReloading ? 'Updating...' : 'Update Info'}
+                        </Button>
+                        {detailLastUpdated && (
+                          <p className="text-xs text-red-100">
+                            Updated: {formatLastUpdated(detailLastUpdated)}
+                          </p>
+                        )}
+                      </div>
                     </div>
                   </div>
                 </Card>
@@ -408,7 +461,7 @@ const MapViewPage = () => {
                       <CardContent className="p-6 text-center">
                         <p className="text-sm text-green-700 mb-2">Detailed Damage Assessment</p>
                         <p className="text-4xl font-bold text-green-900 mb-1">
-                          {selectedRegionData?.damageAssessment.toLocaleString()} VND
+                          {displayedRegionData?.damageAssessment.toLocaleString()} VND
                         </p>
                       </CardContent>
                     </Card>
@@ -418,17 +471,17 @@ const MapViewPage = () => {
                         <h3 className="font-semibold text-lg mb-4">Detailed Damage Assessment</h3>
                         <DamageMetric
                           label="Soil Erosion"
-                          percentage={selectedRegionData?.soilErosion || 0}
+                          percentage={displayedRegionData?.soilErosion || 0}
                           color="bg-red-500"
                         />
                         <DamageMetric
                           label="Flooding"
-                          percentage={selectedRegionData?.flooding || 0}
+                          percentage={displayedRegionData?.flooding || 0}
                           color="bg-blue-500"
                         />
                         <DamageMetric
                           label="Nutrient Loss"
-                          percentage={selectedRegionData?.nutrientLoss || 0}
+                          percentage={displayedRegionData?.nutrientLoss || 0}
                           color="bg-orange-500"
                         />
                       </CardContent>
@@ -575,15 +628,15 @@ const MapViewPage = () => {
                     <div className="space-y-3 text-sm">
                       <div>
                         <p className="text-slate-600 mb-1">ΔNDVI</p>
-                        <p className="font-bold text-lg">{selectedRegionData?.ndvi}</p>
+                        <p className="font-bold text-lg">{displayedRegionData?.ndvi}</p>
                       </div>
                       <div>
                         <p className="text-slate-600 mb-1">Not reported yet</p>
-                        <p className="font-bold text-lg text-red-600">{selectedRegionData?.notReported} days</p>
+                        <p className="font-bold text-lg text-red-600">{displayedRegionData?.notReported} days</p>
                       </div>
                       <div>
                         <p className="text-slate-600 mb-1">Affected Area</p>
-                        <p className="font-bold text-lg">{selectedRegionData?.affectedArea}</p>
+                        <p className="font-bold text-lg">{displayedRegionData?.affectedArea}</p>
                       </div>
                     </div>
                   </CardContent>
