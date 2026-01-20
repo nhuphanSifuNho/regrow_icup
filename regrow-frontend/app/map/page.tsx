@@ -97,9 +97,9 @@ const MapViewPage = () => {
   const additionalRegions = [
     {
       id: 4,
-      name: 'Hà Nội',
+      name: 'Quảng Ninh',
       severity: 'moderate' as const,
-      position: { top: '38%', left: '48%' },
+      position: { top: '25%', left: '38%' },
       ndvi: 0.58,
       notReported: 12,
       affectedArea: '7,680 ha',
@@ -110,9 +110,9 @@ const MapViewPage = () => {
     },
     {
       id: 5,
-      name: 'Hải Dương',
+      name: 'Hà Tĩnh',
       severity: 'severe' as const,
-      position: { top: '52%', left: '42%' },
+      position: { top: '56%', left: '28%' },
       ndvi: 0.42,
       notReported: 18,
       affectedArea: '11,220 ha',
@@ -123,9 +123,9 @@ const MapViewPage = () => {
     },
     {
       id: 6,
-      name: 'Hưng Yên',
+      name: 'Quảng Trị',
       severity: 'minor' as const,
-      position: { top: '60%', left: '52%' },
+      position: { top: '72%', left: '37%' },
       ndvi: 0.72,
       notReported: 5,
       affectedArea: '3,890 ha',
@@ -140,7 +140,7 @@ const MapViewPage = () => {
   const initialRegions = [
     {
       id: 1,
-      name: 'Quảng Ninh',
+      name: 'Nghệ An',
       severity: 'severe' as const,
       position: { top: '48%', left: '20%' },
       ndvi: 0.45,
@@ -153,9 +153,9 @@ const MapViewPage = () => {
     },
     {
       id: 2,
-      name: 'Hải Phòng',
+      name: 'Hòa Bình',
       severity: 'moderate' as const,
-      position: { top: '67%', left: '33%' },
+      position: { top: '31%', left: '25%' },
       ndvi: 0.62,
       notReported: 8,
       affectedArea: '5,230 ha',
@@ -166,9 +166,9 @@ const MapViewPage = () => {
     },
     {
       id: 3,
-      name: 'Thái Bình',
+      name: 'Đà Nẵng',
       severity: 'minor' as const,
-      position: { top: '86%', left: '45%' },
+      position: { top: '82%', left: '45%' },
       ndvi: 0.78,
       notReported: 3,
       affectedArea: '2,450 ha',
