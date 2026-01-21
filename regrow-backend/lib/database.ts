@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 
 /**
  * MongoDB Connection Configuration
- * 
+ *
  * Manages database connection with automatic reconnection and error handling.
  * Best practices:
  * - Connection pooling for performance
@@ -160,7 +160,7 @@ class Database {
 
   /**
    * Initialize database indexes
-   * 
+   *
    * This should be called after all models are loaded to ensure
    * all indexes are created in MongoDB
    */
